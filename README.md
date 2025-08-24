@@ -1,6 +1,6 @@
 # DeepSeek Claude CLI
 
-A CLI wrapper that creates an isolated Claude Code installation configured to use DeepSeek's Anthropic-compatible API instead of the standard Anthropic API.
+A CLI wrapper that creates an isolated Claude Code installation configured to use DeepSeek's Anthropic-compatible API instead of the standard Anthropic API. The installation script works on both macOS and Linux.
 
 ## 🚀 What This Does
 
@@ -26,8 +26,8 @@ This project provides a seamless way to use Claude Code with DeepSeek's API whil
 export DEEPSEEK_API_KEY=your_actual_api_key_here
 
 # Permanent setup (add to shell profile)
-echo 'export DEEPSEEK_API_KEY=your_actual_api_key_here' >> ~/.bashrc  # or ~/.zshrc
-source ~/.bashrc  # or source ~/.zshrc
+echo 'export DEEPSEEK_API_KEY=your_actual_api_key_here' >> ~/.bashrc  # or ~/.bash_profile / ~/.zshrc
+source ~/.bashrc  # or source ~/.bash_profile / ~/.zshrc
 ```
 
 ### 2. Run the Installation
@@ -44,10 +44,10 @@ chmod +x install-deepseek-claude.sh
 **Option B: One-line curl installation**
 ```bash
 # Install directly from GitHub
-curl -L https://raw.githubusercontent.com/iDrwish/deepseek-claude-wrapper/main/install-deepseek-claude.sh | sh
+curl -L https://raw.githubusercontent.com/iDrwish/deepseek-claude-wrapper/main/install-deepseek-claude.sh | bash
 ```
 
-**⚠️ Security Note**: Always review scripts before piping them to sh. You can download and inspect first:
+**⚠️ Security Note**: Always review scripts before piping them to bash. You can download and inspect first:
 ```bash
 curl -O https://raw.githubusercontent.com/iDrwish/deepseek-claude-wrapper/main/install-deepseek-claude.sh
 # Review the script, then run:

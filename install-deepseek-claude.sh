@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # DeepSeek Claude Installation Script
 # This script installs claude-code in an isolated environment configured for DeepSeek
-# Can be run directly or via curl: curl -L https://raw.githubusercontent.com/iDrwish/deepseek-claude-wrapper/main/install-deepseek-claude.sh | sh
+# Can be run directly or via curl: curl -L https://raw.githubusercontent.com/iDrwish/deepseek-claude-wrapper/main/install-deepseek-claude.sh | bash
 
 set -e
 
@@ -19,6 +19,9 @@ BIN_DIR="/usr/local/bin"
 WRAPPER_SCRIPT="deepseek-claude"
 
 echo -e "${BLUE}🚀 Installing DeepSeek Claude in isolated environment...${NC}"
+
+# Detect operating system (Linux or macOS)
+OS="$(uname -s)"
 
 # Check if Node.js and npm are installed
 if ! command -v node &> /dev/null; then
@@ -97,9 +100,14 @@ chmod +x "$INSTALL_DIR/$WRAPPER_SCRIPT"
 echo -e "${BLUE}🔗 Adding to PATH...${NC}"
 SHELL_PROFILE=""
 if [ "$SHELL" = "/bin/zsh" ] || [ "$SHELL" = "/usr/bin/zsh" ]; then
+    # zsh uses the same profile file on macOS and Linux
     SHELL_PROFILE="$HOME/.zshrc"
 elif [ "$SHELL" = "/bin/bash" ] || [ "$SHELL" = "/usr/bin/bash" ]; then
-    SHELL_PROFILE="$HOME/.bashrc"
+    if [ "$OS" = "Darwin" ]; then
+        SHELL_PROFILE="$HOME/.bash_profile"
+    else
+        SHELL_PROFILE="$HOME/.bashrc"
+    fi
 fi
 
 if [ -n "$SHELL_PROFILE" ]; then
@@ -129,8 +137,8 @@ echo -e "${BLUE}📚 Additional Information:${NC}"
 echo -e "• Your original claude installation remains untouched"
 echo -e "• DeepSeek Claude is installed in: $INSTALL_DIR"
 echo -e "• The command 'deepseek-claude' is now available system-wide"
-echo -e "• To uninstall, simply run: rm -rf $INSTALL_DIR && sudo rm $BIN_DIR/$WRAPPER_SCRIPT"
-echo -e "• For future installations, you can use: curl -L https://raw.githubusercontent.com/iDrwish/deepseek-claude-wrapper/main/install-deepseek-claude.sh | sh"
+echo -e "• To uninstall, simply run: rm -rf $INSTALL_DIR"
+echo -e "• For future installations, you can use: curl -L https://raw.githubusercontent.com/iDrwish/deepseek-claude-wrapper/main/install-deepseek-claude.sh | bash"
 echo ""
 echo -e "${BLUE}🔧 Environment Variables Set:${NC}"
 echo -e "• ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic"
