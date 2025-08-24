@@ -32,11 +32,26 @@ source ~/.bashrc  # or source ~/.zshrc
 
 ### 2. Run the Installation
 
+**Option A: Download and run locally**
 ```bash
 # Make scripts executable (if needed)
 chmod +x install-deepseek-claude.sh
 
 # Install DeepSeek Claude
+./install-deepseek-claude.sh
+```
+
+**Option B: One-line curl installation**
+```bash
+# Install directly from GitHub
+curl -L https://raw.githubusercontent.com/iDrwish/deepseek-claude-wrapper/main/install-deepseek-claude.sh | sh
+```
+
+**⚠️ Security Note**: Always review scripts before piping them to sh. You can download and inspect first:
+```bash
+curl -O https://raw.githubusercontent.com/iDrwish/deepseek-claude-wrapper/main/install-deepseek-claude.sh
+# Review the script, then run:
+chmod +x install-deepseek-claude.sh
 ./install-deepseek-claude.sh
 ```
 
@@ -86,7 +101,7 @@ The installation script performs the following:
 ## 🗂️ File Structure
 
 ```
-claude-code-deepseek-cli/
+deepseek-claude-wrapper/
 ├── install-deepseek-claude.sh    # Main installation script
 ├── uninstall-deepseek-claude.sh  # Clean removal script
 └── README.md                     # This documentation

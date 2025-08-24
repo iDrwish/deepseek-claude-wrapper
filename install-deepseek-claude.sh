@@ -2,7 +2,7 @@
 
 # DeepSeek Claude Installation Script
 # This script installs claude-code in an isolated environment configured for DeepSeek
-# Can be run directly or via curl: curl -L https://raw.githubusercontent.com/yourusername/claude-code-deepseek-cli/main/install-deepseek-claude.sh | sh
+# Can be run directly or via curl: curl -L https://raw.githubusercontent.com/iDrwish/deepseek-claude-wrapper/main/install-deepseek-claude.sh | sh
 
 set -e
 
@@ -130,6 +130,7 @@ echo -e "• Your original claude installation remains untouched"
 echo -e "• DeepSeek Claude is installed in: $INSTALL_DIR"
 echo -e "• The command 'deepseek-claude' is now available system-wide"
 echo -e "• To uninstall, simply run: rm -rf $INSTALL_DIR && sudo rm $BIN_DIR/$WRAPPER_SCRIPT"
+echo -e "• For future installations, you can use: curl -L https://raw.githubusercontent.com/iDrwish/deepseek-claude-wrapper/main/install-deepseek-claude.sh | sh"
 echo ""
 echo -e "${BLUE}🔧 Environment Variables Set:${NC}"
 echo -e "• ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic"
