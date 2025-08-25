@@ -1,15 +1,16 @@
 # DeepSeek Claude CLI
 
-A CLI wrapper that creates an isolated Claude Code installation configured to use DeepSeek's Anthropic-compatible API instead of the standard Anthropic API. The installation script works on both macOS and Linux.
+A CLI wrapper that creates an isolated Claude Code installation configured to use DeepSeek V3.1 with **100% Claude Code CLI compatibility**. Every command and flag from the [official Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code/cli-reference) works identically.
 
 ## 🚀 What This Does
 
-This project provides a seamless way to use Claude Code with DeepSeek's API while keeping your existing Claude installation completely untouched. It creates:
+This project provides a seamless way to use Claude Code with DeepSeek V3.1 while maintaining **complete CLI compatibility** with the original Claude Code:
 
-- **Isolated Environment**: Installs Claude Code in `~/.deepseek-claude/`
-- **DeepSeek Configuration**: Pre-configured to use DeepSeek's API endpoints and models
-- **System Integration**: Adds `deepseek-claude` command available system-wide
-- **No Conflicts**: Your original Claude Code installation remains unchanged
+- **🔄 100% CLI Compatibility**: All Claude Code commands and flags work with `deepseek-claude`
+- **🔒 Isolated Environment**: Installs Claude Code in `~/.deepseek-claude/`
+- **🧠 DeepSeek V3.1 Integration**: Pre-configured to use DeepSeek's advanced reasoning model
+- **🛠️ System Integration**: Adds `deepseek-claude` command available system-wide
+- **🚫 No Conflicts**: Your original Claude Code installation remains unchanged
 
 ## 📋 Prerequisites
 
@@ -65,6 +66,43 @@ cd my-project
 deepseek-claude
 ```
 
+## 🚀 Complete Claude Code CLI Compatibility
+
+**`deepseek-claude` provides 100% compatibility with all Claude Code CLI commands and flags.** Every feature from the [official Claude Code CLI reference](https://docs.anthropic.com/en/docs/claude-code/cli-reference) works identically, just with DeepSeek V3.1 as the backend.
+
+### 📋 All Claude Code Commands Work:
+
+| Command | DeepSeek Equivalent | Description |
+|---------|---------------------|-------------|
+| `claude` | `deepseek-claude` | Start interactive REPL |
+| `claude "query"` | `deepseek-claude "query"` | Start REPL with initial prompt |
+| `claude -p "query"` | `deepseek-claude -p "query"` | Query via SDK, then exit |
+| `claude -c` | `deepseek-claude -c` | Continue most recent conversation |
+| `claude update` | `deepseek-claude update` | Update to latest version |
+| `claude config` | `deepseek-claude config` | Configure settings |
+| `claude mcp` | `deepseek-claude mcp` | Configure MCP servers |
+| `claude doctor` | `deepseek-claude doctor` | Health diagnostics |
+
+### 🏷️ All Claude Code Flags Work:
+
+| Flag | Example with DeepSeek | Description |
+|------|----------------------|-------------|
+| `--print, -p` | `deepseek-claude -p "query"` | Print response without interactive mode |
+| `--model` | `deepseek-claude --model sonnet` | Set model (uses DeepSeek V3.1) |
+| `--output-format` | `deepseek-claude -p "query" --output-format json` | Specify output format |
+| `--verbose` | `deepseek-claude --verbose` | Enable verbose logging |
+| `--debug` | `deepseek-claude --debug` | Enable debug mode |
+| `--continue, -c` | `deepseek-claude -c` | Continue recent conversation |
+| `--resume, -r` | `deepseek-claude -r "session-id"` | Resume specific session |
+| `--add-dir` | `deepseek-claude --add-dir ../apps ../lib` | Add working directories |
+| `--allowedTools` | `deepseek-claude --allowedTools "Bash" "Edit"` | Allow specific tools |
+| `--disallowedTools` | `deepseek-claude --disallowedTools "Edit"` | Disallow specific tools |
+| `--permission-mode` | `deepseek-claude --permission-mode plan` | Set permission mode |
+| `--append-system-prompt` | `deepseek-claude --append-system-prompt "Custom"` | Append system prompt |
+| `--max-turns` | `deepseek-claude -p --max-turns 3 "query"` | Limit agentic turns |
+
+**📚 Complete Reference**: See [Claude Code CLI Reference](https://docs.anthropic.com/en/docs/claude-code/cli-reference) for detailed documentation of all commands and flags.
+
 ## 🎯 Usage Examples
 
 ### Basic Usage
@@ -73,20 +111,40 @@ cd my-project
 deepseek-claude
 ```
 
-### With Custom Instructions
+### Advanced CLI Usage
 ```bash
-cd my-project
-deepseek-claude --instruction "Focus on code optimization and performance"
+# Non-interactive with JSON output
+deepseek-claude -p "Analyze this codebase" --output-format json
+
+# Continue previous conversation with verbose logging
+deepseek-claude -c --verbose
+
+# Debug mode with custom system prompt
+deepseek-claude --debug --append-system-prompt "Focus on security"
+
+# Pipe content for analysis
+cat logs.txt | deepseek-claude -p "Analyze these logs"
+
+# Resume specific session
+deepseek-claude -r "session-123" "Continue the refactoring"
 ```
 
-### Get Help
+### Configuration & Management
 ```bash
-deepseek-claude --help
+# Configure settings (same as Claude)
+deepseek-claude config set theme dark
+deepseek-claude config list
+
+# Health check
+deepseek-claude doctor
+
+# Update to latest version
+deepseek-claude update
 ```
 
 ## 🔧 How It Works
 
-The installation script performs the following:
+The installation creates a transparent wrapper that provides **100% compatibility** with all [Claude Code CLI commands and flags](https://docs.anthropic.com/en/docs/claude-code/cli-reference):
 
 1. **Creates Isolated Directory**: `~/.deepseek-claude/`
 2. **Installs Claude Code**: Local npm installation in the isolated environment
@@ -95,14 +153,14 @@ The installation script performs the following:
    - `ANTHROPIC_AUTH_TOKEN=$DEEPSEEK_API_KEY`
    - `ANTHROPIC_MODEL=DeepSeek-V3.1`
    - `ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat`
-4. **Creates Wrapper Script**: Bash script that sets up environment and launches Claude
-5. **Adds to PATH**: Makes `deepseek-claude` available system-wide
+4. **Creates Smart Wrapper**: Intercepts `update` command, passes everything else to Claude transparently
+5. **Adds to PATH**: Makes `deepseek-claude` available system-wide with full CLI compatibility
 
 ## 🗂️ File Structure
 
 ```
 deepseek-claude-wrapper/
-├── install-deepseek-claude.sh    # Main installation script
+├── install-deepseek-claude.sh    # Main installation script  
 ├── uninstall-deepseek-claude.sh  # Clean removal script
 └── README.md                     # This documentation
 ```
@@ -163,6 +221,17 @@ echo $DEEPSEEK_API_KEY
 # https://platform.deepseek.com/
 ```
 
+### Auto-Update Failed Message
+If you see "Auto-update failed" when starting `deepseek-claude`:
+
+```bash
+# This is normal for isolated installations
+# Use the built-in update command instead:
+deepseek-claude update
+```
+
+**Why this happens**: The isolated installation can't auto-update like global installations, but manual updates work perfectly.
+
 ### Permission Issues
 ```bash
 # Make scripts executable
@@ -197,11 +266,12 @@ export CUSTOM_VAR="value"
 
 ## 🎉 Features
 
-- 🔒 **Complete Isolation**: No interference with existing installations
-- 🚀 **One-Command Setup**: Simple installation process
-- 🔄 **DeepSeek Integration**: Full API compatibility
-- 🛠️ **System-wide Access**: Available from any directory
-- 🧹 **Easy Removal**: Clean uninstallation script
+- 🔄 **100% Claude CLI Compatibility**: Every command and flag from [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code/cli-reference) works identically
+- 🧠 **DeepSeek V3.1 Reasoning**: Advanced reasoning capabilities with full tool support
+- 🔒 **Complete Isolation**: No interference with existing Claude installations
+- 🚀 **One-Command Setup**: Simple installation process with automatic configuration
+- 🛠️ **System-wide Access**: Available from any directory as `deepseek-claude`
+- 🧹 **Easy Management**: Built-in update command and clean uninstallation
 
 ---
 

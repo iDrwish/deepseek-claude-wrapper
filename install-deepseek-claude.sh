@@ -72,6 +72,13 @@ cat > "$INSTALL_DIR/$WRAPPER_SCRIPT" << 'EOF'
 # DeepSeek Claude Wrapper Script
 # This script sets up DeepSeek environment variables and launches claude-code
 
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
 # Check if DEEPSEEK_API_KEY is set
 if [ -z "$DEEPSEEK_API_KEY" ]; then
     echo "❌ Error: DEEPSEEK_API_KEY environment variable is not set."
@@ -80,16 +87,55 @@ if [ -z "$DEEPSEEK_API_KEY" ]; then
     exit 1
 fi
 
-# Set DeepSeek environment variables
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Handle the 'update' command specifically
+if [ "$1" = "update" ]; then
+    echo -e "${BLUE}🔄 Updating DeepSeek Claude...${NC}"
+    
+    # Check current version
+    CURRENT_VERSION=$(npm list @anthropic-ai/claude-code --depth=0 --prefix="$SCRIPT_DIR" 2>/dev/null | grep @anthropic-ai/claude-code | cut -d@ -f3)
+    echo -e "${BLUE}📋 Current version: v$CURRENT_VERSION${NC}"
+    
+    # Check latest version
+    echo -e "${BLUE}🔍 Checking for updates...${NC}"
+    LATEST_VERSION=$(npm view @anthropic-ai/claude-code version 2>/dev/null)
+    echo -e "${BLUE}   Latest: v$LATEST_VERSION${NC}"
+    
+    if [ "$CURRENT_VERSION" = "$LATEST_VERSION" ]; then
+        echo -e "${GREEN}✅ Already up to date!${NC}"
+        exit 0
+    fi
+    
+    # Update the package
+    echo -e "${BLUE}⬇️  Updating @anthropic-ai/claude-code...${NC}"
+    cd "$SCRIPT_DIR"
+    npm update @anthropic-ai/claude-code
+    
+    # Verify update
+    NEW_VERSION=$(npm list @anthropic-ai/claude-code --depth=0 2>/dev/null | grep @anthropic-ai/claude-code | cut -d@ -f3)
+    
+    if [ "$NEW_VERSION" = "$LATEST_VERSION" ]; then
+        echo -e "${GREEN}🎉 Update successful!${NC}"
+        echo -e "${GREEN}   Updated from v$CURRENT_VERSION to v$NEW_VERSION${NC}"
+    else
+        echo -e "${RED}❌ Update may have failed. Current version: v$NEW_VERSION${NC}"
+        exit 1
+    fi
+    
+    echo ""
+    echo -e "${BLUE}🚀 DeepSeek Claude is now ready with the latest version!${NC}"
+    exit 0
+fi
+
+# Set DeepSeek environment variables for all other commands
 export ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic"
 export ANTHROPIC_AUTH_TOKEN="$DEEPSEEK_API_KEY"
 export ANTHROPIC_MODEL="DeepSeek-V3.1"
 export ANTHROPIC_SMALL_FAST_MODEL="deepseek-chat"
 
-# Get the directory where this script is located
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-# Run claude-code from the isolated installation
+# Run claude-code from the isolated installation with all arguments
 exec "$SCRIPT_DIR/node_modules/.bin/claude" "$@"
 EOF
 
